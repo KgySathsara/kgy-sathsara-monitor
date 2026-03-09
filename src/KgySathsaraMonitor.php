@@ -24,7 +24,7 @@ class KgySathsaraMonitor
         $this->thresholds = config('kgy-sathsara.thresholds', [
             'cpu' => 80,
             'memory' => 80,
-            'disk' => 10,
+            'disk' => 90,
             'load' => 4.0
         ]);
     }
@@ -309,76 +309,51 @@ class KgySathsaraMonitor
     /**
      * Send email alert
      */
-    // protected function sendEmailAlert($alerts, $data)
-    // {
-    //     $to = config('kgy-sathsara.notifications.email.to');
-    //     $subject = "⚠️ KGY Sathsara Monitor Alert - " . now()->format('Y-m-d H:i:s');
-        
-    //     $body = "System Alert from KGY Sathsara Monitor\n\n";
-    //     $body .= "Time: " . now()->format('Y-m-d H:i:s') . "\n\n";
-        
-    //     foreach ($alerts as $alert) {
-    //         $body .= $alert['message'] . "\n";
-    //     }
-        
-    //     $body .= "\nCurrent Stats:\n";
-    //     $body .= "CPU: {$data['cpu']}%\n";
-    //     $body .= "Memory: {$data['memory']}%\n";
-    //     $body .= "Disk: {$data['disk']}%\n";
-    //     $body .= "Load: {$data['load']}\n";
-        
-    //     try {
-    //         mail($to, $subject, $body);
-    //     } catch (\Exception $e) {
-    //         Log::error("KGY Sathsara email alert failed: " . $e->getMessage());
-    //     }
-    // }
-
     protected function sendEmailAlert($alerts, $data)
-{
-    $to = config('kgy-sathsara.notifications.email.to');
-    if (!$to) {
-        \Log::warning('KGY Monitor: No email recipient configured');
-        return;
-    }
-    
-    $subject = "⚠️ KGY Sathsara Monitor Alert - " . now()->format('Y-m-d H:i:s');
-    
-    // Build email body
-    $body = "⚠️ System Alert from KGY Sathsara Monitor\n\n";
-    $body .= "Time: " . now()->format('Y-m-d H:i:s') . "\n\n";
-    $body .= "Alerts:\n";
-    
-    foreach ($alerts as $alert) {
-        $body .= "- {$alert['type']}: {$alert['value']}% (Threshold: {$alert['threshold']}%)\n";
-    }
-    
-    $body .= "\nCurrent Stats:\n";
-    $body .= "CPU: {$data['cpu']}%\n";
-    $body .= "Memory: {$data['memory']}%\n";
-    $body .= "Disk: {$data['disk']}%\n";
-    $body .= "Load: {$data['load']}\n";
-    
-    try {
-        // Use Laravel Mail
-        Mail::raw($body, function ($message) use ($to, $subject) {
-            $message->to($to)
-                    ->subject($subject)
-                    ->from(config('mail.from.address'), config('mail.from.name'));
-        });
+    {
+        $to = config('kgy-sathsara.notifications.email.to');
+        if (!$to) {
+            \Log::warning('KGY Monitor: No email recipient configured');
+            return;
+        }
         
-        \Log::info('KGY Monitor: Email alert sent via MailHog to ' . $to);
+        $subject = "⚠️ KGY Sathsara Monitor Alert - " . now()->format('Y-m-d H:i:s');
         
-    } catch (\Exception $e) {
-        \Log::error('KGY Monitor email error: ' . $e->getMessage());
+        // Build email body
+        $body = "⚠️ System Alert from KGY Sathsara Monitor\n\n";
+        $body .= "Time: " . now()->format('Y-m-d H:i:s') . "\n\n";
+        $body .= "Alerts:\n";
         
-        // Fallback to mail() function
-        $headers = "From: " . config('mail.from.address') . "\r\n";
-        if (mail($to, $subject, $body, $headers)) {
-            \Log::info('KGY Monitor: Email alert sent via mail()');
+        foreach ($alerts as $alert) {
+            $body .= "- {$alert['type']}: {$alert['value']}% (Threshold: {$alert['threshold']}%)\n";
+        }
+        
+        $body .= "\nCurrent Stats:\n";
+        $body .= "CPU: {$data['cpu']}%\n";
+        $body .= "Memory: {$data['memory']}%\n";
+        $body .= "Disk: {$data['disk']}%\n";
+        $body .= "Load: {$data['load']}\n";
+        
+        try {
+            // Use Laravel Mail
+            Mail::raw($body, function ($message) use ($to, $subject) {
+                $message->to($to)
+                        ->subject($subject)
+                        ->from(config('mail.from.address'), config('mail.from.name'));
+            });
+            
+            \Log::info('KGY Monitor: Email alert sent via MailHog to ' . $to);
+            
+        } catch (\Exception $e) {
+            \Log::error('KGY Monitor email error: ' . $e->getMessage());
+            
+            // Fallback to mail() function
+            $headers = "From: " . config('mail.from.address') . "\r\n";
+            if (mail($to, $subject, $body, $headers)) {
+                \Log::info('KGY Monitor: Email alert sent via mail()');
+            }
         }
     }
-}
 
     /**
      * Send Slack alert

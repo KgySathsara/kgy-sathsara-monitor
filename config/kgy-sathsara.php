@@ -22,7 +22,7 @@ return [
     'thresholds' => [
         'cpu' => env('KGY_CPU_THRESHOLD', 80),
         'memory' => env('KGY_MEMORY_THRESHOLD', 80),
-        'disk' => env('KGY_DISK_THRESHOLD', 10),
+        'disk' => env('KGY_DISK_THRESHOLD', 90),
         'load' => env('KGY_LOAD_THRESHOLD', 4.0),
     ],
 
