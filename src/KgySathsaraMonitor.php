@@ -24,7 +24,7 @@ class KgySathsaraMonitor
         $this->thresholds = config('kgy-sathsara.thresholds', [
             'cpu' => 80,
             'memory' => 80,
-            'disk' => 90,
+            'disk' => 10,
             'load' => 4.0
         ]);
     }
