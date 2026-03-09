@@ -1,0 +1,38 @@
+{
+    "name": "kgy_sathsara/monitor",
+    "description": "KGY Sathsara's Custom System Monitoring Package for Laravel",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "KGY Sathsara",
+            "email": "yohansathsara87@gmail.com",
+            "homepage": "https://github.com/kgy_sathsara"
+        }
+    ],
+    "keywords": ["laravel", "monitoring", "system-monitor", "cpu-monitor", "kgy-sathsara"],
+    "require": {
+        "php": "^7.4|^8.0",
+        "illuminate/support": "^6.0|^7.0|^8.0|^9.0|^10.0",
+        "illuminate/console": "^6.0|^7.0|^8.0|^9.0|^10.0",
+        "illuminate/database": "^6.0|^7.0|^8.0|^9.0|^10.0",
+        "guzzlehttp/guzzle": "^7.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "KgySathsara\\Monitor\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "KgySathsara\\Monitor\\KgySathsaraServiceProvider"
+            ],
+            "aliases": {
+                "KgySathsara": "KgySathsara\\Monitor\\Facades\\KgySathsara"
+            }
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
