@@ -33,3 +33,10 @@ Custom system monitoring package for Laravel created by **KGY Sathsara**. Monito
         "kgy_sathsara/monitor": "dev-main"
     }
 }
+
+### Step 2: 
+composer config repositories.kgy_sathsara vcs https://github.com/KgySathsara/kgy-sathsara-monitor
+composer require kgy_sathsara/monitor:dev-main
+composer config repositories.kgy_sathsara vcs https://github.com/KgySathsara/kgy-sathsara-monitor
+php artisan migrate
+php artisan kgy-sathsara:monitor
